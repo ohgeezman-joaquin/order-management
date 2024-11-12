@@ -1,0 +1,274 @@
+/* 整體字型設定 */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+}
+
+/* 標題樣式 */
+h1 {
+    color: #2d8da5;
+}
+
+/* 表格樣式設定 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 50px;
+}
+
+/* 表頭與儲存格樣式設定 */
+th, td {
+    border: 1px solid black;
+    padding: 20px;
+    text-align: center;
+    font-size: 25px;
+}
+
+/* 日曆儲存格樣式 */
+#calendar td {
+    position: relative;
+    text-align: center;
+}
+
+/* 訂單數量顯示樣式 */
+.orders-count {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    color: red;
+    margin: auto;
+}
+
+/* 表頭背景顏色 */
+th {
+    background-color: #6a6da9;
+}
+
+/* 儲存格邊框樣式及大小設定 */
+td {
+    border: 3px solid #ddd;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+/* 超連結樣式設定 */
+a {
+    display: inline-block;
+    padding: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+/* 超連結滑鼠懸停樣式 */
+a:hover {
+    background-color: #0056b3;
+}
+
+/* 前一個月的日期樣式 */
+.prev-month {
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 0.8em;
+}
+
+/* 按鈕樣式設定 */
+button {
+    background-color: #3e7040;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 上個月按鈕樣式 */
+button#prevMonth {
+    background-color: #2196F3;
+}
+
+/* 下個月按鈕樣式 */
+button#nextMonth {
+    background-color: #f44336;
+}
+
+/* 項目選單及選項字型大小 */
+.item,
+.item option {
+    font-size: 120%;
+}
+
+/* 項目選單樣式 */
+.item {
+    transform: scale(1.2);
+    transform-origin: left;
+    width: 150px;
+}
+
+/* 模態框樣式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 模態框內容樣式 */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    width: 40%;
+    height: 50%;
+    overflow: auto;
+}
+
+/* 模態框內的標籤、輸入框及按鈕字型大小 */
+.modal-content label,
+.modal-content input,
+.modal-content button {
+    font-size: 25px;
+}
+
+/* 模態框關閉按鈕樣式 */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* 任務內容區塊字型大小 */
+#taskContent {
+    font-size: 20px;
+}
+
+/* 任務內容區塊內的div樣式 */
+#taskContent div {
+    margin-bottom: 10px;
+}
+
+/* 任務內容區塊內的強調文字樣式 */
+#taskContent strong {
+    font-weight: bold;
+}
+
+/* 任務內容區塊內的水平線樣式 */
+#taskContent hr {
+    margin: 10px 0;
+}
+
+/* 任務項目樣式 */
+.task_item {
+    display: inline-block;
+    width: 200px;
+    margin-bottom: 0px;
+}
+
+/* 項目摘要樣式 */
+.item_summary {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+/* 項目摘要前綴樣式 */
+.item_prefix {
+    width: 40px;
+    margin-right: 10px;
+}
+
+/* 項目名稱樣式 */
+.item_name {
+    width: 100px;
+    font-weight: bold;
+}
+
+/* 項目數量標籤樣式 */
+.item_quantity_label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+/* 項目數量值樣式 */
+.item_quantity_value {
+    flex-grow: 1;
+}
+
+/* 查詢項目輸入框樣式 */
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* 上下個月新增訂單樣式 */
+.buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* 手機螢幕樣式調整 */
+@media screen and (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 18px;
+    }
+
+    #calendar td {
+        height: 30px;
+    }
+
+    .orders-count {
+        font-size: 16px;
+    }
+
+    .item {
+        width: 120px;
+    }
+
+    .modal-content {
+        width: 80%;
+        height: 60%;
+    }
+
+    #taskContent {
+        font-size: 16px;
+    }
+
+    #taskContent div {
+        margin-bottom: 50px;
+    }
+
+    #taskContent strong {
+        font-weight: normal;
+    }
+
+    #taskContent hr {
+        margin: 5px 0;
+    }
+}

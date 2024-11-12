@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單日曆</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .selected {
+            background-color: #c1e1c5;
+            color: #ffffff;
+            border: 2px solid #5caa47;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>{{ year }}年{{ month }}月 訂單</h1>
+
+    <div class="buttons-container">
+        <div class="buttons">
+            <button onclick="changeMonth(-1)">上個月</button>
+            <button onclick="changeMonth(1)">下個月</button>
+            <button onclick="openModal()">新增訂單</button>
+        </div>
+
+        <form id="searchForm" onsubmit="searchOrder(event)" class="search-form">
+            <label for="searchOrderNumber">查詢訂單號碼：</label>
+            <input type="text" id="searchOrderNumber" name="searchOrderNumber" required>
+            <button type="submit">查詢</button>
+        </form>
+    </div>
+
+    <form id="calendar" onsubmit="submitForm(event)">
+        <div id="taskContent"></div>
+
+        <table border="1">
+            <tr>
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+                <th>六</th>
+                <th>日</th>
+            </tr>
+            {% for week in cal %}
+                <tr>
+                    {% for day in week %}
+                        <td id="day{{ day }}" onclick="showInput('{{ day }}')">
+                            {% if day > 0 %}
+                                <strong>{{ day }}</strong><br>
+                                {% if day in orders_per_day %}
+                                    <span class="orders-count">有{{ orders_per_day[day] }}張訂單</span><br>
+                                {% endif %}
+                            {% else %}
+                                <span class="prev-month">{{ cal[0][cal[1].index(day)-1] if 0 in cal[1] else '' }}</span>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form id="taskForm" onsubmit="submitForm(event)">
+                <div>
+                    <label for="orderNumber">訂單號碼：</label>
+                    <input type="text" id="orderNumber" name="orderNumber" required>
+                </div>
+                <div>
+                    <label for="time">時間：</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                <div>
+                    <label for="date">日期：</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div>
+                    <label for="note">備註：</label>
+                    <input type="text" id="note" name="note">
+                </div>
+                <div id="itemsContainer">
+                    <div class="item-row">
+                        <label>項目：</label>
+                        <button type="button" data-item="烏Q" onclick="selectItem(this)">烏Q</button>
+                        <button type="button" data-item="綠Q" onclick="selectItem(this)">綠Q</button>
+                        <button type="button" data-item="鳳Q" onclick="selectItem(this)">鳳Q</button>
+                        <button type="button" data-item="芋Q" onclick="selectItem(this)">芋Q</button>
+                        <button type="button" data-item="棗Q" onclick="selectItem(this)">棗Q</button>
+                        <button type="button" data-item="廣Q" onclick="selectItem(this)">廣Q</button>
+                        <br>
+                        <button type="button" data-item="甜凸" onclick="selectItem(this)">甜凸</button>
+                        <button type="button" data-item="鹹凸" onclick="selectItem(this)">鹹凸</button>
+                        <button type="button" data-item="咖哩凸" onclick="selectItem(this)">咖哩凸</button>
+                        <button type="button" data-item="素凸" onclick="selectItem(this)">素凸</button>
+                        <button type="button" data-item="小凸" onclick="selectItem(this)">小凸</button>
+                        <br>
+                        <button type="button" data-item="帝酥" onclick="selectItem(this)">帝酥</button>
+                        <button type="button" data-item="芋酥" onclick="selectItem(this)">芋酥</button>
+                        <button type="button" data-item="桔酥" onclick="selectItem(this)">桔酥</button>
+                        <button type="button" data-item="小月" onclick="selectItem(this)">小月</button>
+                        <button type="button" data-item="小廣" onclick="selectItem(this)">小廣</button>
+                        <button type="button" data-item="大廣" onclick="selectItem(this)">大廣</button>
+                        <input type="hidden" name="item[]">
+                    </div>
+                    <br>
+                    <label for="number">數量：</label>
+                    <input type="number" class="number" name="number[]" required>
+                    <br>
+                    <button type="button" onclick="addItemRow()">新增項目</button>
+                </div>
+
+                <button type="submit">新增</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function changeMonth(offset) {
+            var currentYear = {{ year }};
+            var currentMonth = {{ month }};
+            var newMonth = currentMonth + offset;
+
+            if (newMonth < 1) {
+                newMonth = 12;
+                currentYear -= 1;
+            } else if (newMonth > 12) {
+                newMonth = 1;
+                currentYear += 1;
+            }
+
+            window.location.href = '/calendar/' + currentYear + '/' + newMonth;
+        }
+
+        function showInput(day) {
+            document.getElementById('date').value = `${{ year }}-${{ month }}-${day.toString().padStart(2, '0')}`;
+            fetchTasksForDate(day);
+        }
+
+        function fetchTasksForDate(day) {
+    var year = {{ year }};
+    var month = {{ month }};
+    day = day.toString().padStart(2, '0');
+    var date = `${year}-${month.toString().padStart(2, '0')}-${day}`;
+
+    fetch(`/tasks/${date}`)
+        .then(response => response.json())
+        .then(tasks => {
+            var taskContent = document.getElementById('taskContent');
+            taskContent.innerHTML = '';
+
+            var dateListItem = document.createElement('li');
+            dateListItem.innerHTML = `<strong>日期：</strong> ${date}<br>`;
+            taskContent.appendChild(dateListItem);
+
+            if (tasks.length > 0) {
+                tasks.sort((a, b) => {
+                    const timeA = parseInt(a.time);
+                    const timeB = parseInt(b.time);
+                    return timeA - timeB;
+                });
+
+                var table = document.createElement('table');
+                table.style.borderCollapse = 'collapse';
+                table.style.width = '100%';
+
+                var itemsDict = {};
+
+                tasks.forEach(task => {
+                    task.items.forEach(item => {
+                        if (!itemsDict[item.item]) {
+                            itemsDict[item.item] = 0;
+                        }
+                        itemsDict[item.item] += item.number;
+                    });
+
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    cell1.style.minWidth = '200px';
+                    cell1.style.textAlign = 'left';
+
+                    cell1.innerHTML = `<strong>時間：</strong> ${task.time}`;
+                    
+                    var itemsDiv = document.createElement('div');
+                    itemsDiv.innerHTML = task.items.map(item => `
+                        <span class="task_item"><strong>項目：</strong> ${item.item}</span>
+                        <span class="task_item"><strong>數量：</strong> ${item.number}</span><br>
+                    `).join(' ');
+                    row.appendChild(itemsDiv);
+
+                    var detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'details';
+                    detailsDiv.innerHTML = `
+                        <br>
+                        <div class="task_order_number"><strong>訂單號碼：</strong> ${task.orderNumber}</div>
+                        <div class="task_note"><strong>備註：</strong> ${task.note}</div>
+                        <button onclick="deleteTask('${task.date}', '${task.time}')">刪除</button><br>
+                        <hr>
+                    `;
+
+                    row.appendChild(detailsDiv);
+                    
+                });
+
+                // 顯示每個項目的總數量
+                for (var item in itemsDict) {
+                    if (itemsDict[item] > 0) {
+                        taskContent.innerHTML += `
+                            <div class="item_summary">
+                                <span class="item_prefix">今天</span>
+                                <span class="item_name"><strong>${item}</strong></span>
+                                <span class="item_quantity_label">的總數量為:</span>
+                                <span class="item_quantity_value">${itemsDict[item]}</span>
+                            </div>
+                        `;
+                    }
+                }
+
+                taskContent.appendChild(table);
+            } else {
+                taskContent.innerHTML += '當天無任何項目。';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching tasks:', error);
+        });
+}
+
+        function deleteTask(date, time) {
+            var confirmDelete = confirm("確定要刪除這筆訂單嗎?");
+            if (confirmDelete) {
+                fetch(`/delete/${date}/${time}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        fetchTasksForDate(date.split('-')[2]);
+                    } else {
+                        console.error('Failed to delete task.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            var formData = new FormData(document.getElementById('taskForm'));
+
+            if (isFormDataEmpty(formData)) {
+                console.log('Form data is empty. Not submitting.');
+                return;
+            }
+
+            var jsonData = {
+                orderNumber: formData.get('orderNumber'),
+                time: formData.get('time'),
+                date: formData.get('date'),
+                note: formData.get('note'),
+                items: []
+            };
+
+            var itemNames = formData.getAll('item[]');
+            var numbers = formData.getAll('number[]');
+
+            for (var i = 0; i < itemNames.length; i++) {
+                jsonData.items.push({
+                    item: itemNames[i],
+                    number: parseInt(numbers[i], 10)
+                });
+            }
+
+            fetch('/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('taskForm').reset();
+
+                    var successMessage = document.createElement('div');
+                    successMessage.innerHTML = '成功新增訂單';
+                    successMessage.style.color = 'green';
+                    successMessage.style.fontSize = '30px';
+                    document.body.insertBefore(successMessage, document.body.firstChild);
+
+                    setTimeout(function () {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    console.error('Failed to add data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function isFormDataEmpty(formData) {
+            for (var value of formData.values()) {
+                if (value.trim() !== '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function openModal() {
+            document.getElementById('myModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function addItemRow() {
+            var itemsContainer = document.getElementById('itemsContainer');
+            var newItemRow = document.createElement('div');
+            newItemRow.className = 'item-row';
+            newItemRow.innerHTML = `
+                <label>項目：</label>
+                        <button type="button" data-item="烏Q" onclick="selectItem(this)">烏Q</button>
+                        <button type="button" data-item="綠Q" onclick="selectItem(this)">綠Q</button>
+                        <button type="button" data-item="鳳Q" onclick="selectItem(this)">鳳Q</button>
+                        <button type="button" data-item="芋Q" onclick="selectItem(this)">芋Q</button>
+                        <button type="button" data-item="棗Q" onclick="selectItem(this)">棗Q</button>
+                        <button type="button" data-item="廣Q" onclick="selectItem(this)">廣Q</button>
+                        <br>
+                        <button type="button" data-item="甜凸" onclick="selectItem(this)">甜凸</button>
+                        <button type="button" data-item="鹹凸" onclick="selectItem(this)">鹹凸</button>
+                        <button type="button" data-item="咖哩凸" onclick="selectItem(this)">咖哩凸</button>
+                        <button type="button" data-item="素凸" onclick="selectItem(this)">素凸</button>
+                        <button type="button" data-item="小凸" onclick="selectItem(this)">小凸</button>
+                        <br>
+                        <button type="button" data-item="帝酥" onclick="selectItem(this)">帝酥</button>
+                        <button type="button" data-item="芋酥" onclick="selectItem(this)">芋酥</button>
+                        <button type="button" data-item="桔酥" onclick="selectItem(this)">桔酥</button>
+                        <button type="button" data-item="小月" onclick="selectItem(this)">小月</button>
+                        <button type="button" data-item="小廣" onclick="selectItem(this)">小廣</button>
+                        <button type="button" data-item="大廣" onclick="selectItem(this)">大廣</button>
+                <input type="hidden" name="item[]">
+                <br>
+                <label for="number">數量：</label>
+                <input type="number" class="number" name="number[]" required>
+                <br>
+                <button type="button" onclick="removeItemRow(this)" style="background-color: #f7d7d7; color: #ff0000;">移除項目</button>
+            `;
+            itemsContainer.insertBefore(newItemRow, itemsContainer.lastElementChild);
+        }
+
+        function selectItem(button) {
+            var attribute = 'data-item';
+            var allButtons = button.parentNode.querySelectorAll(`button[${attribute}]`);
+
+            allButtons.forEach(btn => {
+                btn.classList.remove('selected');
+                btn.disabled = false;
+            });
+
+            if (button.classList.contains('selected')) {
+                button.classList.remove('selected');
+                button.parentNode.querySelector(`input[name="item[]"]`).value = '';
+            } else {
+                button.classList.add('selected');
+                button.parentNode.querySelector(`input[name="item[]"]`).value = button.getAttribute(attribute);
+            }
+        }
+
+        function removeItemRow(button) {
+            button.parentNode.remove();
+        }
+
+        function searchOrder(event) {
+            event.preventDefault();
+            var orderNumber = document.getElementById('searchOrderNumber').value;
+            fetch('/search_order/' + orderNumber)
+                .then(response => response.json())
+                .then(order => {
+                    var taskContent = document.getElementById('taskContent');
+                    taskContent.innerHTML = '';
+                    if (order) {
+                        var dateListItem = document.createElement('li');
+                        dateListItem.innerHTML = `<strong>訂單號碼：</strong> ${order.orderNumber}<br>
+                                                  <strong>日期：</strong> ${order.date}<br>
+                                                  <strong>時間：</strong> ${order.time}<br>
+                                                  <strong>備註：</strong> ${order.note}<br>`;
+                        taskContent.appendChild(dateListItem);
+
+                        var table = document.createElement('table');
+                        table.style.borderCollapse = 'collapse';
+                        table.style.width = '100%';
+
+                        var row = table.insertRow();
+
+                        var itemsDiv = document.createElement('div');
+                        itemsDiv.innerHTML = order.items.map(item => `
+                            <span class="task_item"><strong>項目：</strong> ${item.item}</span>
+                            <span class="task_item"><strong>數量：</strong> ${item.number}</span><br>
+                        `).join(' ');
+                        row.appendChild(itemsDiv);
+
+                        taskContent.appendChild(table);
+
+                        // 清空輸入欄位
+                        document.getElementById('searchOrderNumber').value = '';
+                        
+                    } else {
+                        taskContent.innerHTML = '查無此訂單號碼。';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching order:', error);
+                });
+        }
+    </script>
+
+</body>
+
+</html>
