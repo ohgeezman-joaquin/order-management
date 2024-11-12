@@ -4,6 +4,10 @@
 # 訂單日曆系統
 
 此系統是一個訂單管理工具，提供日曆視圖來顯示和管理每日的訂單數量。使用者可檢視、查詢、新增以及刪除每日的訂單紀錄，並可按日期排列，方便管理日常訂單。
+![image](https://github.com/user-attachments/assets/24eff3ea-4d56-42d2-94ed-911286b4a109)
+
+![image](https://github.com/user-attachments/assets/b37dadb3-7701-4001-8304-8af63fc0577d)
+
 
 ## 功能概述
 - **日曆視圖展示訂單數量**：按日顯示訂單數量，方便掌握每日訂單情況。
