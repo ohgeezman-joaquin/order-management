@@ -3,6 +3,8 @@
 這是一個訂單管理設計的網頁應用程式，幫助店家有效管理和追蹤節日期間的訂單。
 ![alt text](image.png)
 ![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
 
 ## 功能特色
 
