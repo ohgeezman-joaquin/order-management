@@ -1,0 +1,1539 @@
+/* 整體字型設定 */
+body {
+    font-family: 'Noto Sans TC', 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 標題樣式 */
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+/* 導航連結容器 */
+.nav-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.nav-links a {
+    margin: 0 10px;
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-links a:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links a i {
+    font-size: 14px;
+}
+
+/* 表格樣式設定 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+/* 表頭與儲存格樣式設定 */
+th, td {
+    padding: 12px;
+    text-align: center;
+    font-size: 15px;
+    transition: background-color 0.3s;
+    border: 1px solid #e0e0e0;
+}
+
+/* 日曆儲存格樣式 */
+#calendar td {
+    position: relative;
+    text-align: center;
+    height: 70px;
+    vertical-align: top;
+}
+
+/* 訂單數量顯示樣式 */
+.orders-count {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    color: #e74c3c;
+    margin: auto;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 表頭背景顏色 */
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 儲存格邊框樣式及大小設定 */
+td {
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+td:hover {
+    background-color: #f0f7ff;
+}
+
+/* 超連結樣式設定 */
+a {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #3498db;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    font-weight: 500;
+}
+
+/* 超連結滑鼠懸停樣式 */
+a:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 前一個月的日期樣式 */
+.prev-month {
+    color: #bdc3c7;
+    font-size: 0.8em;
+}
+
+/* 按鈕樣式設定 */
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 上個月按鈕樣式 */
+button#prevMonth {
+    background-color: #3498db;
+}
+
+/* 下個月按鈕樣式 */
+button#nextMonth {
+    background-color: #3498db;
+}
+
+/* 刪除按鈕樣式 */
+button[onclick^="deleteTask"] {
+    background-color: #e74c3c;
+}
+
+button[onclick^="deleteTask"]:hover {
+    background-color: #c0392b;
+}
+
+/* 移除項目按鈕樣式 */
+.remove-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.remove-btn:hover {
+    background-color: #c0392b;
+}
+
+/* 項目按鈕樣式 */
+.item-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.item-buttons button {
+    width: 100%;
+    height: 36px;
+    font-size: 14px;
+    padding: 8px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-buttons button.selected {
+    background-color: #27ae60;
+    color: white;
+    border: 2px solid #2ecc71;
+    font-weight: bold;
+}
+
+/* 數量容器樣式 */
+.quantity-container {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-container input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 80px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 項目選單及選項字型大小 */
+.item,
+.item option {
+    font-size: 16px;
+}
+
+/* 項目選單樣式 */
+.item {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 150px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 模態框樣式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+/* 模態框內容樣式 */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0e0e0;
+}
+
+/* 模態框內的標籤、輸入框及按鈕字型大小 */
+.modal-content label,
+.modal-content input,
+.modal-content button {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="time"],
+.modal-content input[type="date"],
+.modal-content input[type="number"],
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 模態框關閉按鈕樣式 */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #7f8c8d;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #e74c3c;
+}
+
+/* 任務內容區塊字型大小 */
+#taskContent {
+    font-size: 15px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+/* 任務內容區塊內的div樣式 */
+#taskContent div {
+    margin-bottom: 10px;
+}
+
+/* 任務內容區塊內的強調文字樣式 */
+#taskContent strong {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* 任務內容區塊內的水平線樣式 */
+#taskContent hr {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* 任務項目樣式 */
+.task_item {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #e0e0e0;
+    padding: 12px 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.task_item strong {
+    margin-right: 8px;
+    color: #2c3e50;
+}
+
+.task_item strong:nth-of-type(2) {
+    margin-left: 15px;
+}
+
+/* 項目摘要樣式 */
+.item_summary {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 15px;
+    background-color: #f0f7ff;
+    padding: 10px;
+    border-radius: 4px;
+    border-left: 4px solid #3498db;
+}
+
+/* 項目摘要前綴樣式 */
+.item_prefix {
+    width: 40px;
+    margin-right: 10px;
+    color: #7f8c8d;
+}
+
+/* 項目名稱樣式 */
+.item_name {
+    width: 100px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* 項目數量標籤樣式 */
+.item_quantity_label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+    color: #7f8c8d;
+}
+
+/* 項目數量值樣式 */
+.item_quantity_value {
+    flex-grow: 1;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* 查詢項目輸入框樣式 */
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-form input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex-grow: 1;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 上下個月新增訂單樣式 */
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* 項目行樣式 */
+.item-row {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+/* 成功訊息樣式 */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s;
+}
+
+/* 錯誤訊息樣式 */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s;
+}
+
+/* 確認對話框內容樣式 */
+.confirm-content {
+    padding: 25px;
+}
+
+.confirm-content h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.confirm-content h3 {
+    color: #2c3e50;
+    margin: 15px 0 10px;
+    font-size: 18px;
+}
+
+.confirm-details {
+    margin-bottom: 20px;
+}
+
+.confirm-details p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.confirm-items {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.confirm-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.confirm-item:last-child {
+    border-bottom: none;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-quantity {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.total-items {
+    margin-top: 15px;
+    text-align: right;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.cancel-btn {
+    background-color: #e74c3c;
+}
+
+.cancel-btn:hover {
+    background-color: #c0392b;
+}
+
+.confirm-btn {
+    background-color: #27ae60;
+}
+
+.confirm-btn:hover {
+    background-color: #219653;
+}
+
+/* 訂單詳情容器 */
+.details {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    border-left: 3px solid #3498db;
+}
+
+/* 訂單時間格子樣式 */
+.task-time-cell {
+    width: 220px;
+    min-width: 220px;
+    max-width: 250px;
+    text-align: left;
+    padding: 15px;
+    background-color: #f0f7ff;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-right: none;
+}
+
+.task-time-cell div {
+    margin-bottom: 5px;
+}
+
+/* 訂單操作按鈕容器 */
+.task-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* 修改按鈕樣式 */
+.task-time-cell .edit-btn {
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+
+.task-time-cell .edit-btn:hover {
+    background-color: #2980b9;
+}
+
+.task-time-cell .edit-btn i {
+    font-size: 14px;
+}
+
+/* 刪除按鈕樣式 */
+.task-time-cell .delete-btn {
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+
+.task-time-cell .delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.task-time-cell .delete-btn i {
+    font-size: 14px;
+}
+
+/* 調整表格樣式 */
+.task-table th:first-child, .task-table td:first-child {
+    width: 220px;
+}
+
+/* 調整表格 */
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    table-layout: fixed;
+    border-spacing: 0;
+}
+
+.task-table th, .task-table td {
+    padding: 0;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* 日期標頭樣式 */
+.date-header {
+    background-color: #f0f7ff;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #2c3e50;
+    border-left: 4px solid #3498db;
+}
+
+/* 搜尋結果標頭樣式 */
+.search-result-header {
+    background-color: #f0f7ff;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 4px solid #3498db;
+}
+
+.search-result-header h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.search-result-header p {
+    margin: 5px 0;
+    font-size: 15px;
+}
+
+/* 搜尋項目容器樣式 */
+.search-items-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.search-items-container h4 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* 無結果樣式 */
+.no-result, .no-tasks {
+    padding: 20px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 16px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+/* 摘要容器樣式 */
+.summary-container {
+    margin: 15px 0;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+/* 項目管理容器樣式 */
+.items-management {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.items-management h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.items-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.item-tag {
+    background-color: #f0f7ff;
+    color: #2c3e50;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #e0e0e0;
+}
+
+.item-tag button {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-item-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.add-item-form input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 手機版調整 */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #calendar td {
+        height: 60px;
+    }
+
+    .orders-count {
+        font-size: 12px;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .item-buttons {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+
+    .task_item {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .item_summary {
+        flex-wrap: wrap;
+    }
+
+    .confirm-buttons {
+        flex-direction: column;
+    }
+
+    .confirm-item {
+        flex-direction: column;
+    }
+
+    .item-quantity {
+        text-align: right;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .task-time-cell {
+        width: 100% !important;
+        min-width: 100% !important;
+        border-radius: 4px 4px 0 0;
+    }
+    
+    .task-items-container {
+        border-radius: 0 0 4px 4px;
+    }
+
+    .task-time-cell div {
+        font-size: 13px;
+    }
+    
+    .task-time-cell .edit-btn,
+    .task-time-cell .delete-btn {
+        width: 100%;
+        padding: 4px 8px;
+        font-size: 12px;
+        justify-content: center;
+    }
+}
+
+/* 日期選中樣式 */
+.selected-day {
+    background-color: #e8f5e9;
+    border: 2px solid #27ae60;
+}
+
+/* 今天日期樣式 */
+.today {
+    background-color: #fff8e1;
+    font-weight: bold;
+    border: 2px solid #f39c12;
+}
+
+/* 訂單詳情樣式 */
+.task_order_number, .task_note {
+    margin-bottom: 5px;
+    padding: 3px 0;
+}
+
+/* 容器樣式 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* 調整時間欄位寬度 */
+.task-table th:first-child, .task-table td:first-child {
+    width: 100px;
+}
+
+/* 調整訂單編號欄位寬度 */
+.task-table th:nth-child(2), .task-table td:nth-child(2) {
+    width: 120px;
+}
+
+/* 調整項目欄位，讓它自動占用剩餘空間 */
+.task-table th:nth-child(3), .task-table td:nth-child(3) {
+    width: auto;
+}
+
+/* 任務表格容器 */
+table.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    table-layout: fixed;
+    border-spacing: 0;
+}
+
+/* 表格行 */
+.task-row {
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 訂單項目容器 */
+.task-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    padding: 15px;
+    background-color: #f8f9fa;
+}
+
+/* 未變更提示樣式 */
+.unchanged-alert {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 2px solid #ffeeba;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+    animation: pulse 1.5s infinite;
+}
+
+.unchanged-alert i {
+    font-size: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.unchanged-alert strong {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.unchanged-alert p {
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+    }
+}
+
+/* 無變更警告模態視窗樣式 */
+.no-changes-alert {
+    background-color: #fff3cd;
+    border: 3px solid #ffc107;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.3s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.no-changes-alert h2 {
+    color: #856404;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 22px;
+    border-bottom: none;
+}
+
+.no-changes-alert p {
+    color: #856404;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.alert-icon {
+    font-size: 48px;
+    color: #ffc107;
+    margin-bottom: 15px;
+}
+
+.alert-buttons {
+    margin-top: 20px;
+}
+
+.alert-buttons button {
+    background-color: #ffc107;
+    color: #856404;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.alert-buttons button:hover {
+    background-color: #ffb300;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* 訂單比較相關樣式 */
+.compare-info {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.compare-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.compare-row:last-child {
+    border-bottom: none;
+}
+
+.compare-row.changed {
+    background-color: #fff8e1;
+}
+
+.compare-label {
+    width: 90px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.compare-original {
+    width: 30%;
+    color: #7f8c8d;
+    text-decoration: line-through;
+    padding: 0 10px;
+}
+
+.compare-arrow {
+    width: 40px;
+    text-align: center;
+    color: #3498db;
+}
+
+.compare-new {
+    flex-grow: 1;
+    font-weight: bold;
+    color: #27ae60;
+    padding: 0 10px;
+}
+
+.compare-items-container {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.compare-item {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    align-items: center;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.compare-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.compare-item-name {
+    width: 30%;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.compare-item-status {
+    width: 15%;
+    text-align: center;
+    font-size: 14px;
+}
+
+.compare-item-numbers {
+    width: 55%;
+    display: flex;
+    align-items: center;
+}
+
+.item-added {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+}
+
+.item-added .compare-item-status {
+    color: #28a745;
+}
+
+.item-modified {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+}
+
+.item-modified .compare-item-status {
+    color: #ffc107;
+}
+
+.item-deleted {
+    background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
+}
+
+.item-deleted .compare-item-status {
+    color: #dc3545;
+}
+
+.compare-total {
+    text-align: right;
+    font-size: 18px;
+    margin-top: 15px;
+    color: #2c3e50;
+}
+
+/* 確保按鈕樣式正確 */
+.confirm-btn {
+    background-color: #27ae60;
+}
+
+.cancel-btn {
+    background-color: #e74c3c;
+}
+
+/* 無變更提示樣式 */
+.no-changes-info {
+    background-color: #e9ecef;
+    color: #6c757d;
+    padding: 12px;
+    text-align: center;
+    border-radius: 4px;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+/* 取消確認模態視窗樣式 */
+.cancel-confirm-alert {
+    background-color: #f8f9fa;
+    border: 3px solid #6c757d;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.3s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cancel-confirm-alert h2 {
+    color: #343a40;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 22px;
+    border-bottom: none;
+}
+
+.cancel-confirm-alert p {
+    color: #495057;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.cancel-confirm-alert .alert-icon {
+    font-size: 48px;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.cancel-confirm-btn {
+    background-color: #e74c3c !important;
+    color: #fff !important;
+}
+
+/* 表單按鈕容器 */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-buttons .cancel-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.form-buttons .confirm-btn {
+    background-color: #27ae60;
+    color: white;
+}
+
+/* 訂單變更確認視窗樣式 */
+.change-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.change-section h3 {
+    color: #2c3e50;
+    font-size: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.change-section h3 i {
+    color: #3498db;
+}
+
+.change-summary {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.compare-total {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    font-size: 20px;
+    color: #2c3e50;
+}
+
+.compare-total i {
+    color: #3498db;
+}
+
+.compare-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.compare-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-added {
+    background-color: #f0fff4;
+    border-left: 4px solid #28a745;
+}
+
+.item-modified {
+    background-color: #fff7e6;
+    border-left: 4px solid #ffc107;
+}
+
+.item-deleted {
+    background-color: #fff5f5;
+    border-left: 4px solid #dc3545;
+}
+
+.compare-item-status {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.item-added .compare-item-status {
+    color: #28a745;
+}
+
+.item-modified .compare-item-status {
+    color: #ffc107;
+}
+
+.item-deleted .compare-item-status {
+    color: #dc3545;
+}
+
+.compare-item-numbers {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 15px;
+}
+
+.compare-arrow {
+    color: #3498db;
+    animation: arrow-pulse 1.5s infinite;
+}
+
+@keyframes arrow-pulse {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
+.compare-original {
+    color: #95a5a6;
+    text-decoration: line-through;
+    font-style: italic;
+}
+
+.compare-new {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* 調整按鈕樣式 */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    min-width: 120px;
+    padding: 10px 20px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-buttons button i {
+    font-size: 14px;
+}
+
+.item-renamed {
+    background-color: #e7f3fe;
+    border-left: 4px solid #3498db;
+}
+
+.item-renamed .compare-item-status {
+    color: #3498db;
+}
+
+.item-rename-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.compare-item-old, .compare-item-new {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.compare-item-details {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
+.compare-item-header {
+    background-color: rgba(0, 0, 0, 0.03);
+    padding: 10px;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.compare-item-label {
+    font-weight: 600;
+    color: #555;
+    margin-right: 5px;
+}
+
+.compare-item-value {
+    font-weight: 500;
+}
+
+.compare-item-quantity {
+    display: inline-block;
+    margin-left: 15px;
+    color: #666;
+}
+
+.compare-item-quantity-change {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+/* 加強箭頭動畫效果 */
+.item-renamed .compare-arrow i {
+    color: #3498db;
+    font-size: 18px;
+    animation: arrow-pulse-horizontal 1.5s infinite;
+}
+
+@keyframes arrow-pulse-horizontal {
+    0% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+    100% { transform: translateX(-3px); }
+}
+
+/* 簡化項目變更樣式 */
+.simple-renamed {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px !important;
+}
+
+.compare-item-field {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.compare-item-field .compare-item-label {
+    width: 80px;
+    min-width: 80px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.compare-item-field .compare-item-value {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.compare-item-field .compare-original {
+    color: #7f8c8d;
+    text-decoration: line-through;
+}
+
+.compare-item-field .compare-new {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.compare-item-field-number {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed #e0e0e0;
+}
+
+.compare-item-field-number .compare-item-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 數量變更箭頭 */
+.compare-item-field-number .compare-arrow {
+    color: #3498db;
+    animation: arrow-pulse 1.5s infinite;
+}

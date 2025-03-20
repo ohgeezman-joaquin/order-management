@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單管理系統</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .selected {
+            background-color: #c1e1c5;
+            color: #ffffff;
+            border: 2px solid #5caa47;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ year }}年{{ month }}月 訂單管理</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('items') }}"><i class="fas fa-list"></i> 項目管理</a>
+            </div>
+        </header>
+
+    <div class="buttons-container">
+        <div class="buttons">
+                <button onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i> 上個月</button>
+                <button onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i> 下個月</button>
+                <button onclick="openModal()"><i class="fas fa-plus"></i> 新增訂單</button>
+        </div>
+
+        <form id="searchForm" onsubmit="searchOrder(event)" class="search-form">
+            <label for="searchOrderNumber">查詢訂單號碼：</label>
+                <input type="text" id="searchOrderNumber" name="searchOrderNumber" placeholder="輸入訂單號碼..." required>
+                <button type="submit"><i class="fas fa-search"></i> 查詢</button>
+        </form>
+    </div>
+
+        <div id="taskContent"></div>
+
+        <div id="calendar">
+            <table>
+                <thead>
+            <tr>
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+                <th>六</th>
+                <th>日</th>
+            </tr>
+                </thead>
+                <tbody>
+            {% for week in cal %}
+                <tr>
+                    {% for day in week %}
+                        <td id="day{{ day }}" onclick="showInput('{{ day }}')">
+                            {% if day > 0 %}
+                                <strong>{{ day }}</strong><br>
+                                {% if day in orders_per_day %}
+                                    <span class="orders-count">有{{ orders_per_day[day] }}張訂單</span><br>
+                                {% endif %}
+                            {% else %}
+                                <span class="prev-month">{{ cal[0][cal[1].index(day)-1] if 0 in cal[1] else '' }}</span>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+                </tbody>
+        </table>
+        </div>
+    </div>
+
+    <!-- 新增訂單模態框 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>新增訂單</h2>
+            <form id="taskForm" onsubmit="submitForm(event)">
+                <div>
+                    <label for="orderNumber">訂單號碼：</label>
+                    <input type="text" id="orderNumber" name="orderNumber" placeholder="輸入訂單號碼..." required>
+                </div>
+                <div>
+                    <label for="time">時間：</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                <div>
+                    <label for="date">日期：</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div>
+                    <label for="note">備註：</label>
+                    <input type="text" id="note" name="note" placeholder="輸入備註...">
+                </div>
+                <div id="itemsContainer">
+                    <div class="item-row">
+                        <label>項目：</label>
+                        <div class="item-buttons">
+                            {% for item in items %}
+                            <button type="button" data-item="{{ item[1] }}" onclick="selectItem(this)">{{ item[1] }}</button>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" name="item[]">
+                        <div class="quantity-container">
+                            <label for="number">數量：</label>
+                            <input type="number" class="number" name="number[]" min="1" required>
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeItemRow(this)"><i class="fas fa-trash"></i> 移除項目</button>
+                    </div>
+                    <button type="button" onclick="addItemRow()"><i class="fas fa-plus"></i> 新增項目</button>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="confirm-btn"><i class="fas fa-save"></i> 儲存訂單</button>
+                    <button type="button" class="cancel-btn" onclick="confirmCancel('add')"><i class="fas fa-times"></i> 取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 編輯訂單模態視窗 -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>修改訂單</h2>
+            <form id="editTaskForm" onsubmit="submitEditForm(event)">
+                <div>
+                    <label for="editOrderNumber">訂單編號:</label>
+                    <input type="text" id="editOrderNumber" name="editOrderNumber" required>
+                </div>
+                <div>
+                    <label for="editDate">日期:</label>
+                    <input type="date" id="editDate" name="editDate" required>
+                </div>
+                <div>
+                    <label for="editTime">時間:</label>
+                    <input type="time" id="editTime" name="editTime" required>
+                </div>
+                <div>
+                    <label for="editNote">備註:</label>
+                    <input type="text" id="editNote" name="editNote">
+                </div>
+                <div id="editItemsContainer">
+                    <!-- 項目會通過JavaScript動態添加 -->
+                </div>
+                <button type="button" onclick="addEditItem()">新增項目</button>
+                <div class="form-buttons">
+                    <button type="submit" class="confirm-btn">更新訂單</button>
+                    <button type="button" class="cancel-btn" onclick="confirmCancel('edit')"><i class="fas fa-times"></i> 取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 使用立即執行函數來避免全局變數污染和減少 linter 錯誤
+        (function() {
+            // 將 Jinja2 變數傳遞給 JavaScript
+            window.currentYear = {{ year }};
+            window.currentMonth = {{ month }};
+            window.allItems = [
+                {% for item in items %}
+                { id: {{ item[0] }}, name: "{{ item[1] }}" },
+                {% endfor %}
+            ];
+            
+            // 設定選中當前日期
+            document.addEventListener('DOMContentLoaded', function() {
+                if (document.querySelector('.today')) {
+                    document.querySelector('.today').click();
+                }
+            });
+        })();
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

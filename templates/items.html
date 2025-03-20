@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>項目管理 - 訂單管理系統</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>項目管理</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}"><i class="fas fa-calendar"></i> 返回日曆</a>
+            </div>
+        </header>
+
+        <div class="items-management">
+            <h3>所有項目</h3>
+            <div class="items-list" id="itemsList">
+                {% for item in items %}
+                <div class="item-tag" data-id="{{ item[0] }}">
+                    {{ item[1] }}
+                    <button onclick="deleteItem({{ item[0] }})"><i class="fas fa-times"></i></button>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="add-item-form">
+                <input type="text" id="newItemName" placeholder="輸入新項目名稱...">
+                <button onclick="addItem()"><i class="fas fa-plus"></i> 新增項目</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加新項目
+        function addItem() {
+            const itemName = document.getElementById('newItemName').value.trim();
+            if (!itemName) {
+                showMessage('請輸入項目名稱', 'error');
+                return;
+            }
+
+            fetch('/api/items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: itemName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    document.getElementById('newItemName').value = '';
+                    refreshItems();
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('錯誤:', error);
+                showMessage('新增項目時發生錯誤', 'error');
+            });
+        }
+
+        // 刪除項目
+        function deleteItem(itemId) {
+            if (!confirm('確定要刪除此項目嗎？')) {
+                return;
+            }
+
+            fetch(`/api/items/${itemId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    refreshItems();
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('錯誤:', error);
+                showMessage('刪除項目時發生錯誤', 'error');
+            });
+        }
+
+        // 刷新項目列表
+        function refreshItems() {
+            fetch('/api/items')
+                .then(response => response.json())
+                .then(items => {
+                    const itemsList = document.getElementById('itemsList');
+                    itemsList.innerHTML = '';
+                    
+                    items.forEach(item => {
+                        const itemTag = document.createElement('div');
+                        itemTag.className = 'item-tag';
+                        itemTag.dataset.id = item.id;
+                        itemTag.innerHTML = `
+                            ${item.name}
+                            <button onclick="deleteItem(${item.id})"><i class="fas fa-times"></i></button>
+                        `;
+                        itemsList.appendChild(itemTag);
+                    });
+                })
+                .catch(error => {
+                    console.error('獲取項目時出錯:', error);
+                    showMessage('獲取項目列表時發生錯誤', 'error');
+                });
+        }
+
+        // 顯示訊息
+        function showMessage(message, type) {
+            var messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+            messageDiv.innerHTML = type === 'success' ? 
+                `<i class="fas fa-check-circle"></i> ${message}` : 
+                `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            document.body.insertBefore(messageDiv, document.body.firstChild);
+
+            setTimeout(function () {
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transition = 'opacity 0.5s';
+                
+                setTimeout(function() {
+                    messageDiv.remove();
+                }, 500);
+            }, 3000);
+        }
+
+        // 按下 Enter 鍵時添加項目
+        document.getElementById('newItemName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addItem();
+            }
+        });
+    </script>
+</body>
+
+</html> 
